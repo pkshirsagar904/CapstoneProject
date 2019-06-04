@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Request Center</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<!-- Font Awesome JS -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script defer
+	src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+	integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+	crossorigin="anonymous"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css"
+	href=https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css>
+<link rel="stylesheet" type="text/css"
+	href=https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css>
+<script src="https://use.fontawesome.com/48bbc759d5.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+
+
+</head>
+
+<style type="text/css">
+body {
+	padding-top: 56px;
+}
+
+.sticky-offset {
+	top: 56px;
+}
+
+#body-row {
+	margin-left: 0;
+	margin-right: 0;
+	background-color: #F0F8FF;
+}
+
+#sidebar-container {
+	min-height: 100vh;
+	background-color: #333;
+	padding: 0;
+}
+
+/* Sidebar sizes when expanded and expanded */
+.sidebar-expanded {
+	width: 230px;
+}
+
+.sidebar-collapsed {
+	width: 60px;
+}
+
+/* Menu item*/
+#sidebar-container .list-group a {
+	height: 50px;
+	color: white;
+}
+
+/* Submenu item*/
+#sidebar-container .list-group .sidebar-submenu a {
+	height: 45px;
+	padding-left: 30px;
+}
+
+.sidebar-submenu {
+	font-size: 0.9rem;
+}
+
+/* Separators */
+.sidebar-separator-title {
+	background-color: #333;
+	height: 35px;
+}
+
+.sidebar-separator {
+	background-color: #333;
+	height: 25px;
+}
+
+.logo-separator {
+	background-color: #333;
+	height: 60px;
+}
+
+/* Closed submenu icon */
+#sidebar-container .list-group .list-group-item[aria-expanded="false"] .submenu-icon::after
+	{
+	content: " \f0d7";
+	font-family: FontAwesome;
+	display: inline;
+	text-align: right;
+	padding-left: 10px;
+}
+/* Opened submenu icon */
+#sidebar-container .list-group .list-group-item[aria-expanded="true"] .submenu-icon::after
+	{
+	content: " \f0da";
+	font-family: FontAwesome;
+	display: inline;
+	text-align: right;
+	padding-left: 10px;
+}
+
+.form-control:focus {
+	outline: 0 !important;
+	border-color: initial;
+	box-shadow: none;
+}
+
+table {
+	font-family: 'lato', sans-serif;
+}
+
+tr {
+	background-color: #ffffff;
+	box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
+}
+
+/* tr{
+    border-radius: 3px;
+    padding: 25px 30px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+  }  */
+
+
+</style>
+
+<body>
+	<!-- Bootstrap NavBar -->
+	<nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
+		<button class="navbar-toggler navbar-toggler-right" type="button"
+			data-toggle="collapse" data-target="#navbarNavDropdown"
+			aria-controls="navbarNavDropdown" aria-expanded="false"
+			aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<a class="navbar-brand" th:href="@{~/profile}"> <span
+			class="menu-collapsed">COMPASS</span>
+		</a>
+		<div class="collapse navbar-collapse" id="navbarNavDropdown">
+			<ul class="navbar-nav">
+				<li class="nav-item active"><a class="nav-link"
+					th:href="@{~/profile}">Profile <span class="sr-only">(current)</span></a>
+				</li>
+				<li class="nav-item"><a class="nav-link" th:href="@{/receiveMessenger}">Messages</a>
+				</li>
+				<li class="nav-item"><a class="nav-link"
+					th:href="@{/requestCenter}">Requests</a></li>
+
+
+
+
+				<!-- This menu is hidden in bigger devices with d-sm-none. 
+           The sidebar isn't proper for smaller screens imo, so this dropdown menu can keep all the useful sidebar itens exclusively for smaller screens  -->
+				<li class="nav-item dropdown d-sm-block d-md-none"><a
+					class="nav-link dropdown-toggle" href="#" id="smallerscreenmenu"
+					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Menu </a>
+					<div class="dropdown-menu" aria-labelledby="smallerscreenmenu">
+						<a class="dropdown-item" href="#">Programs</a> <a
+							class="dropdown-item" th:href="@{~/profile}">Profile</a> <a
+							class="dropdown-item" href="#">Tasks</a> <a class="dropdown-item"
+							href="#">Etc ...</a>
+					</div></li>
+				<!-- Smaller devices menu END -->
+
+			</ul>
+
+
+
+
+
+
+
+
+
+			<div class="dropdown nav-button notifications-button hidden-sm-down">
+
+				<a class="btn btn-secondary dropdown-toggle" href="#"
+					id="notifications-dropdown" data-toggle="dropdown"
+					aria-haspopup="true" aria-expanded="false"> <i
+					id="notificationsIcon" class="fa fa-bell" aria-hidden="true"></i>
+
+				</a>
+
+				<!-- NOTIFICATIONS -->
+				<div class="dropdown-menu notification-dropdown-menu"
+					aria-labelledby="notifications-dropdown">
+					<h6 class="dropdown-header">Notifications</h6>
+
+					<!-- CHARGEMENT -->
+					<div id="notificationsLoader"
+						class="dropdown-item dropdown-notification">
+						
+					</div>
+
+					<a class="dropdown-item dropdown-notification-all"
+						th:href="@{~/requestCenter}"> See all notifications </a>
+
+
+				</div>
+
+			</div>
+
+		</div>
+	</nav>
+
+
+
+	<!-- NavBar END -->
+
+
+	<!-- Bootstrap row -->
+	<div class="row" id="body-row">
+		<!-- Sidebar -->
+		<div id="sidebar-container"
+			class="sidebar-expanded d-none d-md-block col-2">
+			<!-- d-* hiddens the Sidebar in smaller devices. Its itens can be kept on the Navbar 'Menu' -->
+			<!-- Bootstrap List Group -->
+			<ul class="list-group sticky-top sticky-offset">
+				<!-- Separator with title -->
+				<li
+					class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
+					<small>MAIN MENU</small>
+				</li>
+				<!-- /END Separator -->
+				<!-- Menu with submenu -->
+
+				<!-- Submenu content -->
+
+				<a href="#submenu2" data-toggle="collapse" aria-expanded="false"
+					class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+					<div class="d-flex w-100 justify-content-start align-items-center">
+						<span class="fa fa-user fa-fw mr-3"></span> <span
+							class="menu-collapsed">Profile</span> <span
+							class="submenu-icon ml-auto"></span>
+					</div>
+				</a>
+				<!-- Submenu content -->
+				<div id="submenu2" class="collapse sidebar-submenu">
+					<a th:href="@{~/profile}"
+						class="list-group-item list-group-item-action bg-dark text-white">
+						<span class="menu-collapsed">View Profile</span>
+					</a> <a th:href="@{/logout}"
+						class="list-group-item list-group-item-action bg-dark text-white">
+						<span class="menu-collapsed">Logout</span>
+					</a>
+
+				</div>
+				
+				<!-- Separator with title -->
+				<li
+					class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
+					<small>OPTIONS</small>
+				</li>
+				<!-- /END Separator -->
+				<a th:href="@{/requestCenter}"
+					class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+					<div class="d-flex w-100 justify-content-start align-items-center">
+						<span class="fa fa-user fa-fw mr-3"></span> <span
+							class="menu-collapsed">Requests</span> <span
+							class="submenu-icon ml-auto"></span>
+					</div>
+				</a>
+				<!-- Submenu content -->
+				
+				<a th:href="@{/receiveMessenger}" class="bg-dark list-group-item list-group-item-action">
+					<div class="d-flex w-100 justify-content-start align-items-center">
+						<span class="fa fa-envelope-o fa-fw mr-3"></span> <span
+							class="menu-collapsed">Messages <!-- <span
+							class="badge badge-pill badge-primary ml-2">5</span> --></span>
+					</div>
+				</a>
+				<!-- Separator without title -->
+
+
+				<!-- Logo -->
+
+			</ul>
+			<!-- List Group END-->
+		</div>
+		<!-- sidebar-container END -->
+
+		<!-- MAIN -->
+		<div class="col py-3">
+
+
+			<div class="col-4">
+				<input class="form-control" id="myInput" type="text"
+					placeholder="Search">
+			</div>
+
+			<br>
+			<table id="myTable1" class="table table-hover" style="width: 100%">
+
+				<thead class="thead-dark">
+
+					<tr>
+						<th scope="col"><span style="font-weight: bold">SERVICE</span>
+						<p onclick="sortTable(0)"><i class="fa fa-fw fa-sort"></i></p></th>
+						<th scope="col"><span style="font-weight: bold">TYPE</span>
+						<p onclick="sortTable(0)"><i class="fa fa-fw fa-sort"></i></p></th>
+						<th scope="col"><span style="font-weight: bold">STATUS</span>
+						<p onclick="sortTable(0)"><i class="fa fa-fw fa-sort"></i></p></th>
+						<th scope="col" ><span
+							style="font-weight: bold">CREATED</span>
+							<p onclick="sortTable(0)"><i class="fa fa-fw fa-sort"></i></p></th>
+						<th scope="col"><span style="font-weight: bold">ASSIGNED
+								TO</span>
+								<p onclick="sortTable(0)"><i class="fa fa-fw fa-sort"></i></p></th>
+						<th scope="col"><span style="font-weight: bold">REFERRAL</span>
+						<p onclick="sortTable(0)"><i class="fa fa-fw fa-sort"></i></p></th>
+						<th scope="col"><span style="font-weight: bold">
+								OPTIONS</span></th>
+
+					</tr>
+				</thead>
+				<tbody id="myTable">
+					<tr th:each="notify: ${notify}">
+						<td th:text="${notify.notification}" />
+						<td th:text="${notify.serviceType}" />
+						<td th:text="${notify.statusMsg}" />
+						<td th:text="${notify.createdDate}" />
+						<td th:text="${notify.orgName}" />
+						<!-- <td><input type="button"
+							th:onclick="|sendRefer('${notify.id}')|" th:text=${notify.id}></input>
+
+			</td> -->
+<!-- th:disabled="${notify.referralOrg != null}" -->
+						<!-- <td><a th:href="@{/setReferral(id=${notify.id})}">
+
+								<button type="button" class="btn btn-primary">View Referral Options</button>
+						</a></td> -->
+						<td>
+
+							<button th:disabled="${notify.referralOrg != null}" th:with="var = ${notify.id}" type="button" class="btn btn-primary" data-toggle="modal"
+								th:attr = "data-target='#exampleModal'+ ${var}" data-whatever="@getbootstrap">Referral</button>
+
+							<div th:with="var = ${notify.id}" class="modal fade" th:id="'exampleModal' + ${var}" tabindex="-1"
+								role="dialog" aria-labelledby="exampleModalLabel"
+								aria-hidden="true">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="exampleModalLabel">Select Organization</h5>
+											<button type="button" class="close" data-dismiss="modal"
+												aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<form method="POST" th:action="@{/requestCenter(notificationid=${notify.id})}"
+											th:object="${notification}">
+								
+											
+											<div class="modal-body">
+
+
+												<div class="form-group">
+												<!-- <input type="hidden" name="notificationid" th:value="${notify.id}"/> -->
+													<select id="selection" name="orgselection" class="org"
+									 style="width: 400px;">
+									 <option value="0">Select Options</option>
+									<option th:each="orgls : ${org1}" 
+									th:value="${orgls.name}"
+                					th:text="${orgls.name}"></option>
+									 
+								</select>
+												</div>
+
+											</div>
+											<div class="modal-footer">
+											<input type="submit"  class="btn btn-secondary" value="Submit" />
+												<button type="button" class="btn btn-secondary"
+													data-dismiss="modal">Close</button>
+												
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+
+
+
+
+
+						</td>
+
+
+						<td><a th:href="@{/noticationTimeline(id=${notify.id})}">
+
+								<button type="button" class="btn btn-primary">View More
+									Options</button>
+						</a></td>
+
+
+
+
+
+					</tr>
+				</tbody>
+
+
+			</table>
+
+
+		</div>
+
+
+
+
+
+
+
+
+		<!-- Main Col END -->
+
+	</div>
+	<!-- body-row END -->
+
+	<script src="https://use.fontawesome.com/48bbc759d5.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+		crossorigin="anonymous"></script>
+	<!-- jQuery CDN - Slim version (=without AJAX) -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<!-- Popper.JS -->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
+		integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
+		crossorigin="anonymous"></script>
+	<script type="text/javascript"
+		src="https://code.jquery.com/jquery-3.3.1.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#mydataTable').DataTable();
+		});
+
+		$('#mydataTable').dataTable({
+
+			"language" : {
+				"emptyTable" : "Above Services Available"
+			}
+		});
+
+		function sendRefer(id) {
+			console.log(id);
+		}
+		$(document)
+				.ready(
+						function() {
+							$("#myInput")
+									.on(
+											"keyup",
+											function() {
+												var value = $(this).val()
+														.toLowerCase();
+												$("#myTable tr")
+														.filter(
+																function() {
+																	$(this)
+																			.toggle(
+																					$(
+																							this)
+																							.text()
+																							.toLowerCase()
+																							.indexOf(
+																									value) > -1)
+																});
+											});
+						});
+
+		function sortTable(n) {
+			var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+			table = document.getElementById("myTable1");
+			switching = true;
+			//Set the sorting direction to ascending:
+			dir = "asc";
+			/*Make a loop that will continue until
+			no switching has been done:*/
+			while (switching) {
+				//start by saying: no switching is done:
+				switching = false;
+				rows = table.rows;
+				/*Loop through all table rows (except the
+				first, which contains table headers):*/
+				for (i = 1; i < (rows.length - 1); i++) {
+					//start by saying there should be no switching:
+					shouldSwitch = false;
+					/*Get the two elements you want to compare,
+					one from current row and one from the next:*/
+					x = rows[i].getElementsByTagName("TD")[n];
+					y = rows[i + 1].getElementsByTagName("TD")[n];
+					/*check if the two rows should switch place,
+					based on the direction, asc or desc:*/
+					if (dir == "asc") {
+						if (x.innerHTML.toLowerCase() > y.innerHTML
+								.toLowerCase()) {
+							//if so, mark as a switch and break the loop:
+							shouldSwitch = true;
+							break;
+						}
+					} else if (dir == "desc") {
+						if (x.innerHTML.toLowerCase() < y.innerHTML
+								.toLowerCase()) {
+							//if so, mark as a switch and break the loop:
+							shouldSwitch = true;
+							break;
+						}
+					}
+				}
+				if (shouldSwitch) {
+					/*If a switch has been marked, make the switch
+					and mark that a switch has been done:*/
+					rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+					switching = true;
+					//Each time a switch is done, increase this count by 1:
+					switchcount++;
+				} else {
+					/*If no switching has been done AND the direction is "asc",
+					set the direction to "desc" and run the while loop again.*/
+					if (switchcount == 0 && dir == "asc") {
+						dir = "desc";
+						switching = true;
+					}
+				}
+			}
+		}
+	</script>
+</body>
+
+<script type="text/javascript">
+	// Hide submenus
+	$('#body-row .collapse').collapse('hide');
+
+	//Datatable
+
+	//Collapse/Expand icon
+	$('#collapse-icon').addClass('fa-angle-double-left');
+
+	//Collapse click
+	$('[data-toggle=sidebar-colapse]').click(function() {
+		SidebarCollapse();
+	});
+
+	function SidebarCollapse() {
+		$('.menu-collapsed').toggleClass('d-none');
+		$('.sidebar-submenu').toggleClass('d-none');
+		$('.submenu-icon').toggleClass('d-none');
+		$('#sidebar-container').toggleClass(
+				'sidebar-expanded sidebar-collapsed');
+
+		// Treating d-flex/d-none on separators with title
+		var SeparatorTitle = $('.sidebar-separator-title');
+		if (SeparatorTitle.hasClass('d-flex')) {
+			SeparatorTitle.removeClass('d-flex');
+		} else {
+			SeparatorTitle.addClass('d-flex');
+		}
+
+		// Collapse/Expand icon
+		$('#collapse-icon').toggleClass(
+				'fa-angle-double-left fa-angle-double-right');
+	}
+
+	function button1() {
+		document.getElementById('form1').submit();
+	}
+
+	//Notification
+	$(function() {
+
+		var count = 6;
+		var lastCount = 0;
+
+		// Pour la maquette
+		var notifications = new Array();
+		notifications
+				.push({
+					href : "#",
+					image : "Modification",
+					texte : "Votre incident " + makeBadge("17-0253")
+							+ " a été modifié",
+					date : "Mercredi 10 Mai, à 9h53"
+				});
+		notifications.push({
+			href : "#",
+			image : "Horloge",
+			texte : "Vous avez " + makeBadge("13") + " incidents en retards",
+			date : "Mercredi 10 Mai, à 8h00"
+		});
+		notifications.push({
+			href : "#",
+			image : "Visible",
+			texte : "Un nouvel incident dans votre groupe "
+					+ makeBadge("réseau"),
+			date : "Mardi 9 Mai, à 18h12"
+		});
+		notifications.push({
+			href : "#",
+			image : "Ajout",
+			texte : "Ouverture du problème " + makeBadge("17-0008"),
+			date : "Mardi 9 Mai, à 15h23"
+		});
+		notifications.push({
+			href : "#",
+			image : "Annulation",
+			texte : "Clotûre du problème " + makeBadge("17-0007"),
+			date : "Mardi 9 Mai, à 12h16"
+		});
+		notifications.push({
+			href : "#",
+			image : "Recherche",
+			texte : "Ouverture de l'incident " + makeBadge("17-1234")
+					+ " depuis le portail web",
+			date : "Mardi 9 Mai, à 10h14"
+		});
+
+		function makeBadge(texte) {
+			return "<span class=\"badge badge-default\">" + texte + "</span>";
+		}
+
+		appNotifications = {
+
+			// Initialisation
+			init : function() {
+				// On masque les éléments
+				$("#notificationsBadge").hide();
+				$("#notificationAucune").hide();
+
+				// On bind le clic sur les notifications
+				$("#notifications-dropdown").on(
+						'click',
+						function() {
+
+							var open = $("#notifications-dropdown").attr(
+									"aria-expanded");
+
+							// Vérification si le menu est ouvert au moment du clic
+							if (open === "false") {
+								appNotifications.loadAll();
+							}
+
+						});
+
+				// On charge les notifications
+				appNotifications.loadAll();
+
+				// Polling
+				// Toutes les 3 minutes on vérifie si il n'y a pas de nouvelles notifications
+				setInterval(function() {
+					appNotifications.loadNumber();
+				}, 180000);
+
+				// Binding de marquage comme lue desktop
+				$('.notification-read-desktop').on('click', function(event) {
+					appNotifications.markAsReadDesktop(event, $(this));
+				});
+
+			},
+
+			// Déclenche le chargement du nombre et des notifs
+			loadAll : function() {
+
+				// On ne charge les notifs que si il y a une différence
+				// Ou si il n'y a aucune notifs
+				if (count !== lastCount || count === 0) {
+					appNotifications.load();
+				}
+				appNotifications.loadNumber();
+
+			},
+
+			// Masque de chargement pour l'icône et le badge
+			badgeLoadingMask : function(show) {
+				if (show === true) {
+					$("#notificationsBadge")
+							.html(appNotifications.badgeSpinner);
+					$("#notificationsBadge").show();
+					// Mobile
+					$("#notificationsBadgeMobile").html(count);
+					$("#notificationsBadgeMobile").show();
+				} else {
+					$("#notificationsBadge").html(count);
+					if (count > 0) {
+						$("#notificationsIcon").removeClass("fa-bell-o");
+						$("#notificationsIcon").addClass("fa-bell");
+						$("#notificationsBadge").show();
+						// Mobile
+						$("#notificationsIconMobile").removeClass("fa-bell-o");
+						$("#notificationsIconMobile").addClass("fa-bell");
+						$("#notificationsBadgeMobile").show();
+					} else {
+						$("#notificationsIcon").addClass("fa-bell-o");
+						$("#notificationsBadge").hide();
+						// Mobile
+						$("#notificationsIconMobile").addClass("fa-bell-o");
+						$("#notificationsBadgeMobile").hide();
+					}
+
+				}
+			},
+
+			// Indique si chargement des notifications
+			loadingMask : function(show) {
+
+				if (show === true) {
+					$("#notificationAucune").hide();
+					$("#notificationsLoader").show();
+				} else {
+					$("#notificationsLoader").hide();
+					if (count > 0) {
+						$("#notificationAucune").hide();
+					} else {
+						$("#notificationAucune").show();
+					}
+				}
+
+			},
+
+			// Chargement du nombre de notifications
+			loadNumber : function() {
+				appNotifications.badgeLoadingMask(true);
+
+				// TODO : API Call pour récupérer le nombre
+
+				// TEMP : pour le template
+				setTimeout(function() {
+					$("#notificationsBadge").html(count);
+					appNotifications.badgeLoadingMask(false);
+				}, 1000);
+			},
+
+			// Chargement de notifications
+			load : function() {
+				appNotifications.loadingMask(true);
+
+				// On vide les notifs
+				$('#notificationsContainer').html("");
+
+				// Sauvegarde du nombre de notifs
+				lastCount = count;
+
+				// TEMP : pour le template
+				setTimeout(function() {
+
+					// TEMP : pour le template
+					for (i = 0; i < count; i++) {
+
+						var template = $('#notificationTemplate').html();
+						template = template.replace("{{href}}",
+								notifications[i].href);
+						template = template.replace("{{image}}",
+								notifications[i].image);
+						template = template.replace("{{texte}}",
+								notifications[i].texte);
+						template = template.replace("{{date}}",
+								notifications[i].date);
+
+						$('#notificationsContainer').append(template);
+					}
+
+					// On bind le marquage comme lue
+					$('.notification-read').on('click', function(event) {
+						appNotifications.markAsRead(event, $(this));
+					});
+
+					// On arrête le chargement
+					appNotifications.loadingMask(false);
+
+					// On réactive le bouton
+					$("#notifications-dropdown").prop("disabled", false);
+				}, 1000);
+			},
+
+			// Marquer une notification comme lue
+			markAsRead : function(event, elem) {
+				// Permet de garde la liste ouverte
+				event.preventDefault();
+				event.stopPropagation();
+
+				// Suppression de la notification
+				elem.parent('.dropdown-notification').remove();
+
+				// TEMP : pour le template
+				count--;
+
+				// Mise à jour du nombre
+				appNotifications.loadAll();
+			},
+
+			// Marquer une notification comme lue version bureau
+			markAsReadDesktop : function(event, elem) {
+				// Permet de ne pas change de page
+				event.preventDefault();
+				event.stopPropagation();
+
+				// Suppression de la notification
+				elem.parent('.dropdown-notification').removeClass(
+						"notification-unread");
+				elem.remove();
+
+				// On supprime le focus
+				if (document.activeElement) {
+					document.activeElement.blur();
+				}
+
+				// TEMP : pour le template
+				count--;
+
+				// Mise à jour du nombre
+				appNotifications.loadAll();
+			},
+
+			add : function() {
+				lastCount = count;
+				count++;
+			},
+
+			// Template du badge
+			badgeSpinner : '<i class="fa fa-spinner fa-pulse fa-fw" aria-hidden="true"></i>'
+		};
+
+		appNotifications.init();
+
+	});
+</script>
+</html>

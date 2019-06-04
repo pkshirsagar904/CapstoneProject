@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Profile</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">
+<link rel="stylesheet"
+	href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script defer
+	src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+	integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+	crossorigin="anonymous"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css">
+</head>
+
+<style>
+body {
+	padding-top: 56px;
+}
+
+.sticky-offset {
+	top: 56px;
+}
+
+div .col-md-6 {
+	position: absolute;
+	right: 10px;
+}
+
+table td {
+	word-wrap: break-word;
+	width: 500px;
+}
+
+#body-row {
+	margin-left: 0;
+	margin-right: 0;
+	background-color: #F0F8FF;
+}
+
+#sidebar-container {
+	min-height: 100vh;
+	background-color: #333;
+	padding: 0;
+}
+
+/* Sidebar sizes when expanded and expanded */
+.sidebar-expanded {
+	width: 230px;
+}
+
+.sidebar-collapsed {
+	width: 60px;
+}
+
+/* Menu item*/
+#sidebar-container .list-group a {
+	height: 50px;
+	color: white;
+}
+
+/* Submenu item*/
+#sidebar-container .list-group .sidebar-submenu a {
+	height: 45px;
+	padding-left: 30px;
+}
+
+.sidebar-submenu {
+	font-size: 0.9rem;
+}
+
+/* Separators */
+.sidebar-separator-title {
+	background-color: #333;
+	height: 35px;
+}
+
+.sidebar-separator {
+	background-color: #333;
+	height: 25px;
+}
+
+.logo-separator {
+	background-color: #333;
+	height: 60px;
+}
+
+/* Closed submenu icon */
+#sidebar-container .list-group .list-group-item[aria-expanded="false"] .submenu-icon::after
+	{
+	content: " \f0d7";
+	font-family: FontAwesome;
+	display: inline;
+	text-align: right;
+	padding-left: 10px;
+}
+/* Opened submenu icon */
+#sidebar-container .list-group .list-group-item[aria-expanded="true"] .submenu-icon::after
+	{
+	content: " \f0da";
+	font-family: FontAwesome;
+	display: inline;
+	text-align: right;
+	padding-left: 10px;
+}
+
+table {
+	font-family: 'lato', sans-serif;
+}
+
+tr {
+	background-color: #ffffff;
+	box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
+}
+
+</style>
+
+<body>
+	<!-- Bootstrap NavBar -->
+	<nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
+		<button class="navbar-toggler navbar-toggler-right" type="button"
+			data-toggle="collapse" data-target="#navbarNavDropdown"
+			aria-controls="navbarNavDropdown" aria-expanded="false"
+			aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<a class="navbar-brand" th:href="@{~/profile}"> <span
+			class="menu-collapsed">COMPASS</span>
+		</a>
+		<div class="collapse navbar-collapse" id="navbarNavDropdown">
+			<ul class="navbar-nav">
+				<li class="nav-item active"><a class="nav-link"
+					th:href="@{~/profile}">Profile <span class="sr-only">(current)</span></a>
+				</li>
+				<li class="nav-item"><a class="nav-link" th:href="@{/receiveMessenger}">Messages</a>
+				</li>
+				<li class="nav-item"><a class="nav-link"
+					th:href="@{/requestCenter}">Requests</a></li>
+
+				<!-- This menu is hidden in bigger devices with d-sm-none. 
+           The sidebar isn't proper for smaller screens imo, so this dropdown menu can keep all the useful sidebar itens exclusively for smaller screens  -->
+				<li class="nav-item dropdown d-sm-block d-md-none"><a
+					class="nav-link dropdown-toggle" href="#" id="smallerscreenmenu"
+					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Menu </a>
+					<div class="dropdown-menu" aria-labelledby="smallerscreenmenu">
+						<a class="dropdown-item" href="#">Programs</a> <a
+							class="dropdown-item" th:href="@{~/profile}">Profile</a> <a
+							class="dropdown-item" href="#">Tasks</a> <a class="dropdown-item"
+							href="#">Etc ...</a>
+					</div></li>
+				<!-- Smaller devices menu END -->
+
+			</ul>
+			
+			
+			
+
+			<div class="dropdown nav-button notifications-button hidden-sm-down">
+
+				<a class="btn btn-secondary dropdown-toggle" href="#"
+					id="notifications-dropdown" data-toggle="dropdown"
+					aria-haspopup="true" aria-expanded="false"> <i
+					id="notificationsIcon" class="fa fa-bell" aria-hidden="true"></i>
+
+				</a>
+
+				<!-- NOTIFICATIONS -->
+				<div class="dropdown-menu notification-dropdown-menu"
+					aria-labelledby="notifications-dropdown">
+					<h6 class="dropdown-header">Notifications</h6>
+
+					<!-- CHARGEMENT -->
+					<div id="notificationsLoader"
+						class="dropdown-item dropdown-notification">
+						<!-- <table>
+							<tr th:each="notify: ${notify}">
+								<td th:text="${notify.notification}" />
+							</tr>
+						</table> -->
+					</div>
+
+					<a class="dropdown-item dropdown-notification-all"
+						th:href="@{/requestCenter}"> See all notifications </a>
+
+
+				</div>
+
+			</div>
+			
+			
+		</div>
+	</nav>
+	<!-- NavBar END -->
+
+
+	<!-- Bootstrap row -->
+	<div class="row" id="body-row">
+		<!-- Sidebar -->
+		<div id="sidebar-container"
+			class="sidebar-expanded d-none d-md-block col-2">
+			<!-- d-* hiddens the Sidebar in smaller devices. Its itens can be kept on the Navbar 'Menu' -->
+			<!-- Bootstrap List Group -->
+			<ul class="list-group sticky-top sticky-offset">
+				<!-- Separator with title -->
+				<li
+					class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
+					<small>MAIN MENU</small>
+				</li>
+				<!-- /END Separator -->
+				<!-- Menu with submenu -->
+
+				<!--            Submenu content-->
+
+				<a href="#submenu2" data-toggle="collapse" aria-expanded="false"
+					class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+					<div class="d-flex w-100 justify-content-start align-items-center">
+						<span class="fa fa-user fa-fw mr-3"></span> <span
+							class="menu-collapsed">Profile</span> <span
+							class="submenu-icon ml-auto"></span>
+					</div>
+				</a>
+				<!-- Submenu content -->
+				<div id="submenu2" class="collapse sidebar-submenu">
+					<a th:href="@{~/profile}"
+						class="list-group-item list-group-item-action bg-dark text-white">
+						<span class="menu-collapsed">View Profile</span>
+					</a> <a th:href="@{/logout}"
+						class="list-group-item list-group-item-action bg-dark text-white">
+						<span class="menu-collapsed">Logout</span>
+					</a>
+
+				</div>
+				
+				<!-- Separator with title -->
+				<li
+					class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
+					<small>OPTIONS</small>
+				</li>
+				<!-- /END Separator -->
+				<a th:href="@{/requestCenter}" 
+					class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+					<div class="d-flex w-100 justify-content-start align-items-center">
+						<span class="fa fa-user fa-fw mr-3"></span> <span
+							class="menu-collapsed">Requests</span> <span
+							class="submenu-icon ml-auto"></span>
+					</div>
+				</a>
+				
+				<a th:href="@{/receiveMessenger}" class="bg-dark list-group-item list-group-item-action">
+					<div class="d-flex w-100 justify-content-start align-items-center">
+						<span class="fa fa-envelope-o fa-fw mr-3"></span> <span
+							class="menu-collapsed">Messages <!-- <span
+							class="badge badge-pill badge-primary ml-2">5</span> --></span>
+					</div>
+				</a>
+				<!-- Separator without title -->
+				<!-- <li class="list-group-item sidebar-separator menu-collapsed"></li>
+            /END Separator
+            <a href="#" class="bg-dark list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="fa fa-question fa-fw mr-3"></span>
+                    <span class="menu-collapsed">Help</span>
+                </div>
+            </a> -->
+
+				<!-- Logo -->
+
+			</ul>
+			<!-- List Group END-->
+		</div>
+		<!-- sidebar-container END -->
+
+		<!-- MAIN -->
+		<div class="row">
+
+			<div class="col-md-12 ml-4 mt-2">
+				<div class="container">
+					<ul class="nav nav-tabs" role="tablist">
+						<li class="nav-item"><a class="nav-item nav-link active"
+							data-toggle="tab" href="#profile">Organization Profile</a></li>
+						<li class="nav-item"><a class="nav-item nav-link"
+							data-toggle="tab" href="#prog">View Programs</a></li>
+
+						<li class="nav-item"><a class="nav-item nav-link"
+							data-toggle="tab" href="#menu2">Add Program</a></li>
+					</ul>
+					<div class="tab-content">
+						<div id="profile" class="tab-pane fade show active">
+							<br>
+							<h5 class="mb-3">Organization Profile</h5>
+							<a th:href="@{~/profedit}" class="btn btn-primary" type="submit" style="float: right;">Edit</a>
+							<table class="table table-borderless">
+								<thead>
+									<tr>
+										<td scope="col"><span style="font-weight: bold">Name</span></td>
+										<td><p>
+												<span th:text="${org1.name}"></span>
+											</p></td>
+									</tr>
+									
+									<tr>
+										<td scope="col"><span style="font-weight: bold">Mission</span></td>
+
+										<td><p>
+												<span th:text="${org1.Mission}"></span>
+											</p></td>
+									</tr>
+									
+
+									<tr>
+										<td scope="col"><span style="font-weight: bold">Description</span></td>
+
+										<td><p>
+												<span th:text="${org1.aboutUs}"></span>
+											</p></td>
+									</tr>
+									
+									<tr>
+										<td scope="col"><span style="font-weight: bold">Keywords</span></td>
+
+										<td><p>
+												<span th:text="${org1.Keywords}"></span>
+											</p></td>
+									</tr>
+									
+									<tr>
+										<td scope="col"><span style="font-weight: bold">Aliases</span></td>
+
+										<td><p>
+												<span th:text="${org1.Aliases}"></span>
+											</p></td>
+									</tr>
+									
+									
+									<tr>
+										<td scope="col"><span style="font-weight: bold">Language Spoken</span></td>
+
+										<td><p>
+												<span th:text="${org1.LanguageSpoken}"></span>
+											</p></td>
+									</tr>
+									
+									<tr>
+										<td scope="col"><span style="font-weight: bold">Employer Identification Number</span></td>
+
+										<td><p>
+												<span th:text="${org1.EmployerIdentificationNumber}"></span>
+											</p></td>
+									</tr>
+									
+									<tr>
+										<td scope="col"><span style="font-weight: bold">Address</span></td>
+
+										<td><p>
+												<span th:text="${org1.address}"></span>
+											</p></td>
+									</tr>
+									
+									
+									<tr>
+										<td scope="col"><span style="font-weight: bold">City</span></td>
+
+										<td><p>
+												<span th:text="${org1.City}"></span>
+											</p></td>
+									</tr>
+									
+									<tr>
+										<td scope="col"><span style="font-weight: bold">State</span></td>
+
+										<td><p>
+												<span th:text="${org1.State}"></span>
+											</p></td>
+									</tr>
+									
+									<tr>
+										<td scope="col"><span style="font-weight: bold">ZipCode</span></td>
+
+										<td><p>
+												<span th:text="${org1.ZipCode}"></span>
+											</p></td>
+									</tr>
+									
+									
+									<tr>
+										<td scope="col"><span style="font-weight: bold">Geographic Area</span></td>
+
+										<td><p>
+												<span th:text="${org1.GeographicArea}"></span>
+											</p></td>
+									</tr>
+									
+									
+									<tr>
+										<td scope="col"><span style="font-weight: bold">Other Locations</span></td>
+
+										<td><p>
+												<span th:text="${org1.OtherLocations}"></span>
+											</p></td>
+									</tr>
+
+									<tr>
+										<td scope="col"><span style="font-weight: bold">Phone</span></td>
+
+										<td><p>
+												<span th:text="${org1.phone}"></span>
+											</p></td>
+									</tr>
+									
+									
+									<tr>
+										<td scope="col"><span style="font-weight: bold">Fax</span></td>
+
+										<td><p>
+												<span th:text="${org1.fax}"></span>
+											</p></td>
+									</tr>
+									
+									<tr>
+										<td scope="col"><span style="font-weight: bold">Email</span></td>
+
+										<td><p>
+												<span th:text="${org1.email}"></span>
+											</p></td>
+									</tr>
+
+									
+									<tr>
+										<td scope="col"><span style="font-weight: bold">Web Address</span></td>
+
+										<td><p>
+												<span th:text="${org1.webAddress}"></span>
+											</p></td>
+									</tr>
+
+									<tr>
+										<td scope="col"><span style="font-weight: bold">Hours of Operation</span></td>
+
+										<td th:text="${org1.hours}"></td>
+									</tr>
+
+	
+								</thead>
+							</table>
+
+						</div>
+
+
+						<div id="prog" class="tab-pane fade">
+							<br>
+
+							<table id="myTable" class="table table-borderless">
+								<thead class="thead-dark">
+									<tr>
+										<th scope="col" onclick="sortTable(0)"><span
+											style="font-weight: bold">Name</span></th>
+										<th scope="col"><span style="font-weight: bold">Description</span></th>
+										<th scope="col"><span style="font-weight: bold">Edit</span></th>
+										<th scope="col"><span style="font-weight: bold">View More Options</span></th>
+									</tr>
+									<tr th:each="programls : ${programls}">
+										<td th:text="${programls.progName}"></td>
+										<td th:text="${programls.description}"></td>
+										<td><a
+											th:href="@{/editProgram(programid=${programls.programid})}"><button
+													type="button" class="btn btn-info">Edit</button></a></td>
+										<td><a
+											th:href="@{/readmore(programid=${programls.programid})}"><button
+													type="button" class="btn btn-info">Read more</button></a></td>
+												
+													
+													
+										 
+									</tr>
+
+								</thead>
+
+
+							</table>
+
+
+							<!-- 		th:text="${programls}"></span> -->
+
+
+						</div>
+
+
+						<div id="menu2" class="container tab-pane fade">
+							<br>
+							<form class="form-group" role="form" method="POST"
+								th:action="@{/profile}" th:object="${programs}">
+								<div class="form-group row">
+									<label for="name" class="col-sm-2 col-form-label">Program
+										Name</label>
+									<div class="col-sm-10">
+										<input type="text" name="progName" class="form-control"
+											placeholder="Program Name" required autofocus>
+									</div>
+								</div>
+
+
+
+								<div class="form-group">
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<span class="input-group-text">Description</span>
+										</div>
+
+
+
+
+										<textarea class="form-control" name="description"
+											aria-label="With textarea"></textarea>
+									</div>
+								</div>
+
+
+
+
+								<div class="form-group">
+									<div class="col-md-6">
+										<button type="submit" class="btn btn-primary">Submit</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+
+
+
+
+			</div>
+		</div>
+	</div>
+
+
+	<!-- body-row END -->
+
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+		crossorigin="anonymous"></script>
+	<!-- jQuery CDN - Slim version (=without AJAX) -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<!-- Popper.JS -->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
+		integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
+		crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+	<script
+		type="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+	<script
+		type="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
+</body>
+
+<script type="text/javascript">
+	// Hide submenus
+	$('#body-row .collapse').collapse('hide');
+
+	//Collapse/Expand icon
+	$('#collapse-icon').addClass('fa-angle-double-left');
+
+	//Collapse click
+	$('[data-toggle=sidebar-colapse]').click(function() {
+		SidebarCollapse();
+	});
+
+	function SidebarCollapse() {
+		$('.menu-collapsed').toggleClass('d-none');
+		$('.sidebar-submenu').toggleClass('d-none');
+		$('.submenu-icon').toggleClass('d-none');
+		$('#sidebar-container').toggleClass(
+				'sidebar-expanded sidebar-collapsed');
+
+		// Treating d-flex/d-none on separators with title
+		var SeparatorTitle = $('.sidebar-separator-title');
+		if (SeparatorTitle.hasClass('d-flex')) {
+			SeparatorTitle.removeClass('d-flex');
+		} else {
+			SeparatorTitle.addClass('d-flex');
+		}
+
+		// Collapse/Expand icon
+		$('#collapse-icon').toggleClass(
+				'fa-angle-double-left fa-angle-double-right');
+	}
+
+	//	sort table
+	function sortTable(n) {
+		var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+		table = document.getElementById("myTable");
+		switching = true;
+		//Set the sorting direction to ascending:
+		dir = "asc";
+		/*Make a loop that will continue until
+		no switching has been done:*/
+		while (switching) {
+			//start by saying: no switching is done:
+			switching = false;
+			rows = table.rows;
+			/*Loop through all table rows (except the
+			first, which contains table headers):*/
+			for (i = 1; i < (rows.length - 1); i++) {
+				//start by saying there should be no switching:
+				shouldSwitch = false;
+				/*Get the two elements you want to compare,
+				one from current row and one from the next:*/
+				x = rows[i].getElementsByTagName("TD")[n];
+				y = rows[i + 1].getElementsByTagName("TD")[n];
+				/*check if the two rows should switch place,
+				based on the direction, asc or desc:*/
+				if (dir == "asc") {
+					if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+						//if so, mark as a switch and break the loop:
+						shouldSwitch = true;
+						break;
+					}
+				} else if (dir == "desc") {
+					if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+						//if so, mark as a switch and break the loop:
+						shouldSwitch = true;
+						break;
+					}
+				}
+			}
+			if (shouldSwitch) {
+				/*If a switch has been marked, make the switch
+				and mark that a switch has been done:*/
+				rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+				switching = true;
+				//Each time a switch is done, increase this count by 1:
+				switchcount++;
+			} else {
+				/*If no switching has been done AND the direction is "asc",
+				set the direction to "desc" and run the while loop again.*/
+				if (switchcount == 0 && dir == "asc") {
+					dir = "desc";
+					switching = true;
+				}
+			}
+		}
+	}
+</script>
+</html>

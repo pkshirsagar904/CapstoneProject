@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Messenger</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<!-- Font Awesome JS -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script defer
+	src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+	integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+	crossorigin="anonymous"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet">
+</head>
+
+<style type="text/css">
+body {
+	padding-top: 56px;
+}
+
+.sticky-offset {
+	top: 56px;
+}
+
+#body-row {
+	margin-left: 0;
+	margin-right: 0;
+}
+
+#sidebar-container {
+	min-height: 100vh;
+	background-color: #333;
+	padding: 0;
+}
+
+/* Sidebar sizes when expanded and expanded */
+.sidebar-expanded {
+	width: 230px;
+}
+
+.sidebar-collapsed {
+	width: 60px;
+}
+
+/* Menu item*/
+#sidebar-container .list-group a {
+	height: 50px;
+	color: white;
+}
+
+/* Submenu item*/
+#sidebar-container .list-group .sidebar-submenu a {
+	height: 45px;
+	padding-left: 30px;
+}
+
+.sidebar-submenu {
+	font-size: 0.9rem;
+}
+
+/* Separators */
+.sidebar-separator-title {
+	background-color: #333;
+	height: 35px;
+}
+
+.sidebar-separator {
+	background-color: #333;
+	height: 25px;
+}
+
+.logo-separator {
+	background-color: #333;
+	height: 60px;
+}
+
+/* Closed submenu icon */
+#sidebar-container .list-group .list-group-item[aria-expanded="false"] .submenu-icon::after
+	{
+	content: " \f0d7";
+	font-family: FontAwesome;
+	display: inline;
+	text-align: right;
+	padding-left: 10px;
+}
+/* Opened submenu icon */
+#sidebar-container .list-group .list-group-item[aria-expanded="true"] .submenu-icon::after
+	{
+	content: " \f0da";
+	font-family: FontAwesome;
+	display: inline;
+	text-align: right;
+	padding-left: 10px;
+}
+
+
+.container{max-width:1170px; margin:auto;}
+img{ max-width:100%;}
+.inbox_people {
+  background: #f8f8f8 none repeat scroll 0 0;
+  float: left;
+  overflow: hidden;
+  width: 40%; border-right:1px solid #c4c4c4;
+}
+.inbox_msg {
+  border: 1px solid #c4c4c4;
+  clear: both;
+  overflow: hidden;
+}
+.top_spac{ margin: 20px 0 0;}
+
+
+.recent_heading {float: left; width:40%;}
+.srch_bar {
+  display: inline-block;
+  text-align: right;
+  width: 60%; padding:
+}
+.headind_srch{ padding:10px 29px 10px 20px; overflow:hidden; border-bottom:1px solid #c4c4c4;}
+
+.recent_heading h4 {
+  color: #05728f;
+  font-size: 21px;
+  margin: auto;
+}
+.srch_bar input{ border:1px solid #cdcdcd; border-width:0 0 1px 0; width:80%; padding:2px 0 4px 6px; background:none;}
+.srch_bar .input-group-addon button {
+  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+  border: medium none;
+  padding: 0;
+  color: #707070;
+  font-size: 18px;
+}
+.srch_bar .input-group-addon { margin: 0 0 0 -27px;}
+
+.chat_ib h5{ font-size:15px; color:#464646; margin:0 0 8px 0;}
+.chat_ib h5 span{ font-size:13px; float:right;}
+.chat_ib p{ font-size:14px; color:#989898; margin:auto}
+.chat_img {
+  float: left;
+  width: 11%;
+}
+.chat_ib {
+  float: left;
+  padding: 0 0 0 15px;
+  width: 88%;
+}
+
+.chat_people{ overflow:hidden; clear:both;}
+.chat_list {
+  border-bottom: 1px solid #c4c4c4;
+  margin: 0;
+  padding: 18px 16px 10px;
+}
+.inbox_chat { height: 550px; overflow-y: scroll;}
+
+.active_chat{ background:#ebebeb;}
+
+.incoming_msg_img {
+  display: inline-block;
+  width: 6%;
+}
+.received_msg {
+  display: inline-block;
+  padding: 0 0 0 10px;
+  vertical-align: top;
+  width: 92%;
+ }
+ .received_withd_msg p {
+  background: #ebebeb none repeat scroll 0 0;
+  border-radius: 3px;
+  color: #646464;
+  font-size: 14px;
+  margin: 0;
+  padding: 5px 10px 5px 12px;
+  width: 100%;
+}
+.time_date {
+  color: #747474;
+  display: block;
+  font-size: 12px;
+  margin: 8px 0 0;
+}
+.received_withd_msg { width: 57%;}
+.mesgs {
+  float: left;
+  padding: 30px 15px 0 25px;
+  width: 60%;
+}
+
+ .sent_msg p {
+  background: #05728f none repeat scroll 0 0;
+  border-radius: 3px;
+  font-size: 14px;
+  margin: 0; color:#fff;
+  padding: 5px 10px 5px 12px;
+  width:100%;
+}
+.outgoing_msg{ overflow:hidden; margin:26px 0 26px;}
+.sent_msg {
+  float: right;
+  width: 46%;
+}
+.input_msg_write input {
+  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+  border: medium none;
+  color: #4c4c4c;
+  font-size: 15px;
+  min-height: 48px;
+  width: 100%;
+}
+
+.type_msg {border-top: 1px solid #c4c4c4;position: relative;}
+.msg_send_btn {
+  background: #05728f none repeat scroll 0 0;
+  border: medium none;
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  font-size: 17px;
+  height: 33px;
+  position: absolute;
+  right: 0;
+  top: 11px;
+  width: 33px;
+}
+.messaging { padding: 0 0 50px 0;}
+.msg_history {
+  height: 516px;
+  overflow-y: auto;
+}
+
+
+
+</style>
+
+<body>
+	<!-- Bootstrap NavBar -->
+	<nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
+		<button class="navbar-toggler navbar-toggler-right" type="button"
+			data-toggle="collapse" data-target="#navbarNavDropdown"
+			aria-controls="navbarNavDropdown" aria-expanded="false"
+			aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<a class="navbar-brand" th:href="@{~/clientLogin}"> <span class="menu-collapsed">COMPASS</span>
+		</a>
+		<div class="collapse navbar-collapse" id="navbarNavDropdown">
+			<ul class="navbar-nav">
+				<li class="nav-item active"><a class="nav-link" th:href="@{~/clientLogin}">Home
+						<span class="sr-only">(current)</span>
+				</a></li>
+				<li class="nav-item"><a class="nav-link"
+					th:href="@{~/startMessenger}">Messages</a></li>
+				<li class="nav-item"><a class="nav-link"
+					th:href="@{~/clientReq}">RFE for Requests</a></li>
+
+				<!-- This menu is hidden in bigger devices with d-sm-none. 
+           The sidebar isn't proper for smaller screens imo, so this dropdown menu can keep all the useful sidebar itens exclusively for smaller screens  -->
+				<li class="nav-item dropdown d-sm-block d-md-none"><a
+					class="nav-link dropdown-toggle" href="#" id="smallerscreenmenu"
+					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Menu </a>
+					<div class="dropdown-menu" aria-labelledby="smallerscreenmenu">
+						<a class="dropdown-item" href="#">Programs</a> <a
+							class="dropdown-item" href="#">Profile</a> <a
+							class="dropdown-item" href="#">Tasks</a> <a class="dropdown-item"
+							href="#">Etc ...</a>
+					</div></li>
+				<!-- Smaller devices menu END -->
+
+			</ul>
+		</div>
+	</nav>
+	<!-- NavBar END -->
+
+
+	<!-- Bootstrap row -->
+	<div class="row" id="body-row">
+		<!-- Sidebar -->
+		<div id="sidebar-container"
+			class="sidebar-expanded d-none d-md-block col-2">
+			<!-- d-* hiddens the Sidebar in smaller devices. Its itens can be kept on the Navbar 'Menu' -->
+			<!-- Bootstrap List Group -->
+			<ul class="list-group sticky-top sticky-offset">
+				<!-- Separator with title -->
+				<li
+					class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
+					<small>MAIN MENU</small>
+				</li>
+				<!-- /END Separator -->
+				<!-- Menu with submenu -->
+
+				<!-- Submenu content -->
+
+				<a href="#submenu2" data-toggle="collapse" aria-expanded="false"
+					class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+					<div class="d-flex w-100 justify-content-start align-items-center">
+						<span class="fa fa-user fa-fw mr-3"></span> <span
+							class="menu-collapsed">Profile</span> <span
+							class="submenu-icon ml-auto"></span>
+					</div>
+				</a>
+				<!-- Submenu content -->
+				<div id="submenu2" class="collapse sidebar-submenu">
+
+					<a th:href="@{/logout}"
+						class="list-group-item list-group-item-action bg-dark text-white">
+						<span class="menu-collapsed">Logout</span>
+					</a>
+
+				</div>
+
+				<!-- Separator with title -->
+				<li
+					class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
+					<small>OPTIONS</small>
+				</li>
+				<!-- /END Separator -->
+
+				<!-- Submenu content -->
+
+
+				<!-- Separator without title -->
+
+
+				<a th:href="@{~/clientLogin}"
+					class="bg-dark list-group-item list-group-item-action">
+					<div class="d-flex w-100 justify-content-start align-items-center">
+						<span class="fa fa-question fa-fw mr-3"></span> <span
+							class="menu-collapsed">Help</span>
+					</div>
+				</a>
+
+				<!-- Logo -->
+
+			</ul>
+			<!-- List Group END-->
+		</div>
+		<!-- sidebar-container END -->
+
+		<!-- MAIN -->
+		<div class="container">
+
+
+			<div class="row">
+
+				<div class="col">
+					<div class="container">
+									<h3 class=" text-center">Messaging</h3>
+									<div class="messaging">
+										<div class="inbox_msg">
+											
+											<div class="mesgs">
+												<div class="msg_history">
+													
+	
+												</div>
+												
+												<div th:each="msgls : ${msgls}">
+													<div th:if="${msgls.sender == rightName}" class="outgoing_msg">
+										              <div class="sent_msg">
+										                <p th:text="${msgls.typedContent}"></p>
+										                <span class="time_date" th:text="${msgls.date}"> </span> </div>
+										            </div>
+										            
+										            <div th:if="${msgls.sender != rightName}"  class="incoming_msg">
+										              <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+										              <div class="received_msg">
+										                <div class="received_withd_msg">
+										                  <p th:text="${msgls.typedContent}"></p>
+										                  <span class="time_date" th:text="${msgls.date}"> </span></div>
+										              </div>
+										            </div>
+									            </div>
+												
+												
+												<div class="outgoing_msg">
+              									
+												
+												<form method="POST" th:action="@{/startMessenger2(orgid=${org1})}" th:object="${messenger}"
+												onsubmit="window.location.reload()">
+													<div class="input_msg_write">
+														<input type="text" name="typedContent" class="form-control" id="typedContent"
+                               									 placeholder="Type Message" required autofocus>
+														<button type="submit" class="btn btn-primary">Send</button>
+													</div>
+												</form>
+											</div>
+										</div>
+										</div>
+										</div>
+							
+				</div>
+				<!--     <div class="col">
+    <table id="myTable" class="table table-borderless">
+    
+    <th> <span style="font-weight:bold">Organization Name</span></th>
+    <tr th:each="orgls : ${org}">
+  		  	<td  th:text="${orgls}"></td> 
+  
+   </tr>
+   </table>
+   </div>
+   <div class="col">
+      <table id="myTable" class="table table-borderless">
+     
+    <th> <span style="font-weight:bold">Make Request</span></th>
+   <tr th:each="servicels : ${services}" >
+  			
+   			
+   </tr>
+   </table>
+   </div>
+    -->
+
+
+
+			</div>
+			<!-- <div class="col">
+      2 of 2
+    </div> -->
+
+
+
+			<!--  <form action="/login" method="POST"> -->
+			<!--  <table id="myTable" class="table table-borderless">
+      <thead class="thead-dark">
+      	<tr>
+    <th scope="col"><span style="font-weight:bold">Service Name</span></th>
+   <th scope="col"><span style="font-weight:bold">Organization Name</span></th>
+   </tr> 
+    <tr th:each="servicels : ${services}" >
+  			<td  th:text="${servicels.serviceName}"></td>
+  			
+  			</tr>
+  <td  th:each="orgls : ${org}">
+  		  	<td  th:text="${orgls}"></td> 
+  			
+  			<td>
+  			<a th:href="@{/clientlogin(serviceid=${servicels.serviceid})}">
+  			<button type="button" class="rbutton">Send Request</button></a>
+  			</td>
+  			
+  	</tr>
+</thead>
+
+</table> -->
+			<!-- </form> -->
+		</div>
+		<!-- Main Col END -->
+
+	</div>
+	<!-- body-row END -->
+
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+		crossorigin="anonymous"></script>
+	<!-- jQuery CDN - Slim version (=without AJAX) -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<!-- Popper.JS -->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
+		integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
+		crossorigin="anonymous"></script>
+</body>
+
+<script type="text/javascript">
+	// Hide submenus
+	$('#body-row .collapse').collapse('hide');
+
+	//Collapse/Expand icon
+	$('#collapse-icon').addClass('fa-angle-double-left');
+
+	//Collapse click
+	$('[data-toggle=sidebar-colapse]').click(function() {
+		SidebarCollapse();
+	});
+
+	$('.rbutton').on('click', function() {
+		$(this).prop("disabled", true);
+	});
+
+	function SidebarCollapse() {
+		$('.menu-collapsed').toggleClass('d-none');
+		$('.sidebar-submenu').toggleClass('d-none');
+		$('.submenu-icon').toggleClass('d-none');
+		$('#sidebar-container').toggleClass(
+				'sidebar-expanded sidebar-collapsed');
+
+		// Treating d-flex/d-none on separators with title
+		var SeparatorTitle = $('.sidebar-separator-title');
+		if (SeparatorTitle.hasClass('d-flex')) {
+			SeparatorTitle.removeClass('d-flex');
+		} else {
+			SeparatorTitle.addClass('d-flex');
+		}
+
+		// Collapse/Expand icon
+		$('#collapse-icon').toggleClass(
+				'fa-angle-double-left fa-angle-double-right');
+	}
+</script>
+</html>
